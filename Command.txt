@@ -1,0 +1,137 @@
+For configuring the router 
+Take the cursur on the router
+Click left button of mouse and go to CLI interface
+
+
+//Configuring Router-1 //
+//In Router-1 LAN-1 & LAN-2 is physically connected so we need not configure for these two LAN//
+//We need to configure LAN-3,LAN-4,LAN-5,LAN-6 in Router-1://
+
+R1>enable
+R1#configure terminal 
+R1(config)#ip route 172.16.8.0 255.255.254.0 serial 0/1/0    	 //Static Routing LAN-3//
+R1(config)#ip route 172.16.10.0 255.255.255.0 serial 0/1/0   	 //Static Routing LAN-4//
+R1(config)#ip route 172.16.11.0 255.255.255.128 serial 0/1/0     //Static Routing LAN-5//
+R1(config)#ip route 172.16.11.128 255.255.255.240 serial 0/1/0   //Static Routing LAN-6//
+
+//Configure clock rate//
+R1(config)#interface serial 0/1/0
+R1(config-if)#clock rate 64000
+R1(config-if)#exit
+R1(config)#exit
+R1#
+We can check that the static routing configured successfuly or not by using
+R1#show ip route 
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     172.16.0.0/16 is variably subnetted, 7 subnets, 6 masks
+C       172.16.0.0/22 is directly connected, FastEthernet0/0
+C       172.16.4.0/22 is directly connected, FastEthernet0/1
+S       172.16.8.0/23 is directly connected, Serial0/1/0
+S       172.16.10.0/24 is directly connected, Serial0/1/0
+S       172.16.11.0/25 is directly connected, Serial0/1/0
+S       172.16.11.128/28 is directly connected, Serial0/1/0
+C       172.16.11.144/30 is directly connected, Serial0/1/0
+
+R1#wr     //Save the configuration//
+
+
+//Configuring Router-2 //
+//In Router-2 LAN-3 & LAN-4 is physically connected so we need not configure for these two LAN//
+//We need to configure LAN-1,LAN-2,LAN-5,LAN-6 in Router-2://
+
+R2>enable
+R2#configure terminal 
+R2(config)#ip route 172.16.0.0 255.255.252.0 serial 0/1/0         //Static Routing LAN-1//
+R2(config)#ip route 172.16.4.0 255.255.252.0 serial 0/1/0         //Static Routing LAN-2//
+R2(config)#ip route 172.16.11.0 255.255.255.128 serial 0/1/1      //Static Routing LAN-5//
+R2(config)#ip route 172.16.11.128 255.255.255.240 serial 0/1/1    //Static Routing LAN-6//
+R2(config)#exit
+
+We can check that the static routing configured successfuly or not by using
+R2#show ip route
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     172.16.0.0/16 is variably subnetted, 8 subnets, 6 masks
+S       172.16.0.0/22 is directly connected, Serial0/1/0
+S       172.16.4.0/22 is directly connected, Serial0/1/0
+C       172.16.8.0/23 is directly connected, FastEthernet0/0
+C       172.16.10.0/24 is directly connected, FastEthernet0/1
+S       172.16.11.0/25 is directly connected, Serial0/1/1
+S       172.16.11.128/28 is directly connected, Serial0/1/1
+C       172.16.11.144/30 is directly connected, Serial0/1/0
+C       172.16.11.148/30 is directly connected, Serial0/1/1
+
+R2#wr              //Save the configuration//
+
+
+//Configuring Router-3//
+//In Router-3 LAN-5 & LAN-6 is physically connected so we need not configure for these two LAN//
+//We need to configure LAN-1,LAN-2,LAN-3,LAN-4 in Router-3://
+
+R3>
+R3>enable
+R3#configure terminal 
+R3(config)#ip route 172.16.0.0 255.255.252.0 serial 0/1/0      //Static Routing LAN-1//
+R3(config)#ip route 172.16.4.0 255.255.252.0 serial 0/1/0      //Static Routing LAN-2//
+R3(config)#ip route 172.16.8.0 255.255.254.0 serial 0/1/0      //Static Routing LAN-3//
+R3(config)#ip route 172.16.10.0 255.255.255.0 serial 0/1/0     //Static Routing LAN-4//
+
+//Configure clock rate//
+R3(config)#interface serial 0/1/0 
+R3(config-if)#clock rate 64000
+R3(config-if)#exit
+R3(config)#exit
+R3#show ip route
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     172.16.0.0/16 is variably subnetted, 7 subnets, 5 masks
+S       172.16.0.0/22 is directly connected, Serial0/1/0
+S       172.16.4.0/22 is directly connected, Serial0/1/0
+S       172.16.8.0/23 is directly connected, Serial0/1/0
+S       172.16.10.0/24 is directly connected, Serial0/1/0
+C       172.16.11.0/28 is directly connected, FastEthernet0/0
+C       172.16.11.128/28 is directly connected, FastEthernet0/1
+C       172.16.11.148/30 is directly connected, Serial0/1/0
+
+R3#wr     //Save the configuration//
+
+Now its time to check that the configuration work or not;
+Take the cursor on any PC of your network.
+Left click of your mouse
+Click on the Desktop icon
+Go to Command Prompt and write the command
+
+c:\>ping ip address 
+for example if i want to ping PC-8 from PC-1
+c:\>ping 172.16.11.3
+
+
+Thank You !!!!
+
+
+
