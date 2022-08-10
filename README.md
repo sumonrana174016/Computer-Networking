@@ -1,2 +1,2 @@
 # Computer-Networking
-Don't copy paste these resource.Try your ownself.This will just helping you.
+Don't copy paste these resource.Try yourelf.This will just helping you.
